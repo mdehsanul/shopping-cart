@@ -30,7 +30,7 @@
                            <button id="phone-increase" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
                         <h5>$<span id="phone-unit-price">1219</span></h5>
-                        <img src="./img/remove.png" alt="" class="remove-item">
+                        <img id="cancel-phoneOrder" src="./img/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
@@ -49,7 +49,7 @@
 
                         </div>
                         <h5>$<span id="case-unit-price">59</span></h5>
-                        <img src="./img/remove.png" alt="" class="remove-item">
+                        <img id="cancel-caseOrder" src="./img/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$<span id="total-price">1278</span></h5>
+                        <h5>$<span id="tax-amount">127.8</span></h5>
+                        <h5>$<span id="grand-total">1405.8</span></h5>
                      </div>
                   </div>
                </div>
@@ -78,6 +78,28 @@
       </div>
    </section>
    <script>
+      // cancel phone order
+      const cancelPhoneOrder = document.getElementById('cancel-phoneOrder');
+      cancelPhoneOrder.addEventListener('click', function () {
+         cancelProductOrder('phone');
+      });
+      // cancel case order
+      const cancelCaseOrder = document.getElementById('cancel-caseOrder');
+      cancelCaseOrder.addEventListener('click', function () {
+         cancelProductOrder('case');
+      });
+
+      function cancelProductOrder(product) {
+         if (product == 'phone') {
+            document.getElementById(product + '-count').value = 1;
+            document.getElementById(product + '-unit-price').innerText = 1219;
+         }
+         if (product == 'case') {
+            document.getElementById(product + '-count').value = 1;
+            document.getElementById(product + '-unit-price').innerText = 59;
+         }
+      }
+
       // iPhone 11 128GB Black
       // plus click
       const phoneIncrease = document.getElementById('phone-increase');
@@ -123,8 +145,41 @@
             TotalPrice = productNewCount * 59;
          }
          document.getElementById(product + '-unit-price').innerText = TotalPrice;
+         calculateTotal();
       }
 
+      function calculateTotal() {
+         const phoneCount = getInputValue('phone');
+         const caseCount = getInputValue('case');
+
+         const totalPrice = phoneCount * 1219 + caseCount * 59;
+         document.getElementById('total-price').innerText = totalPrice;
+
+         const tax = Math.round(totalPrice * 0.1);
+         document.getElementById('tax-amount').innerText = tax;
+
+         const grandTotal = totalPrice + tax;
+         document.getElementById('grand-total').innerText = grandTotal;
+
+      }
+
+      function getInputValue(product) {
+         const productInput = document.getElementById(product + '-count');
+         const productCount = parseFloat(productInput.value);
+         return productCount;
+      }
+
+      // Function duplicate
+      // function calculateTotal() {
+      //    const phoneInput = document.getElementById('phone-count').value;
+      //    const phoneCount = parseFloat(phoneInput);
+
+      //    const caseInput = document.getElementById('case-count');
+      //    const caseCount = parseFloat(caseInput.value);
+
+      //    const totalPrice = phoneCount * 1219 + caseCount * 59;
+      //    document.getElementById('total-price').innerText = totalPrice;
+      // }
 
       // Function duplicate
       // function UpdatePhoneChange(isIncrease) {
